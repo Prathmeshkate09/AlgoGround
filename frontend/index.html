@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlgoGround | In-Browser Code & SQL Practice Sandbox</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <a href="#" class="brand">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+            AlgoGround
+            <span class="brand-badge">Sandbox v1.2</span>
+        </a>
+
+        <div class="nav-controls">
+            <div class="streak-pill" id="streakIndicator">
+                🔥 <span>3 Day Streak</span>
+            </div>
+            <button class="btn btn-secondary" id="btnProgress">
+                📊 My Progress
+            </button>
+            <button class="btn btn-secondary" id="themeToggle" title="Toggle Dark/Light Mode">
+                🌙
+            </button>
+        </div>
+    </header>
+
+    <!-- Question Filter Bar -->
+    <div class="filter-bar">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search 18,000+ problems, topics, or companies...">
+        
+        <select id="categoryFilter" class="select-filter">
+            <option value="">All Categories</option>
+            <option value="Algorithms">Algorithms</option>
+            <option value="Data Structures">Data Structures</option>
+            <option value="SQL">SQL Questions</option>
+            <option value="System Design">System Design</option>
+        </select>
+
+        <select id="difficultyFilter" class="select-filter">
+            <option value="">All Difficulties</option>
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+        </select>
+
+        <select id="companyFilter" class="select-filter">
+            <option value="">All Companies</option>
+            <option value="PracHub">PracHub Curated</option>
+            <option value="Google">Google</option>
+            <option value="Meta">Meta</option>
+            <option value="Amazon">Amazon</option>
+            <option value="Apple">Apple</option>
+        </select>
+
+        <span style="margin-left: auto; font-size: 0.8rem; color: var(--text-secondary);" id="questionCount">
+            Showing 4 problems
+        </span>
+    </div>
+
+    <!-- Main Workspace -->
+    <div class="workspace-container">
+        
+        <!-- Left Pane: Problem Description -->
+        <div class="pane" id="problemPane">
+            <div class="question-header">
+                <div class="question-title">
+                    <span id="qTitle">1. Two Sum</span>
+                    <span class="badge badge-easy" id="qDifficulty">Easy</span>
+                </div>
+                <div class="tag-list" id="qCompanyTags">
+                    <span class="company-tag">Google</span>
+                    <span class="company-tag">Meta</span>
+                    <span class="company-tag">PracHub</span>
+                </div>
+            </div>
+
+            <div class="question-body">
+                <div id="qDescription">
+                    Given an array of integers <code>nums</code> and an integer <code>target</code>, return indices of the two numbers such that they add up to target.<br><br>
+                    You may assume each input would have <b>exactly one solution</b>, and you may not use the same element twice.
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <h4>Example Test Cases</h4>
+                    <div id="testCasesPreview" style="margin-top: 0.5rem;"></div>
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <details style="background: var(--bg-card); padding: 0.75rem; border-radius: 6px; cursor: pointer;">
+                        <summary style="font-weight: 600; color: var(--accent-blue);">💡 Click for Hints & Complexity Goals</summary>
+                        <div id="qHints" style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);">
+                            - Try using a Hash Map to trade O(N) space for O(N) linear time lookup.<br>
+                            - Avoid nested O(N^2) loops.
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Pane: Code Editor & Execution Runner -->
+        <div class="pane" id="editorPane">
+            <div class="editor-toolbar">
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <label style="font-size: 0.8rem; color: var(--text-secondary);">Language:</label>
+                    <select id="languageSelect" class="select-filter" style="padding: 2px 8px;">
+                        <option value="javascript">JavaScript (ES2024)</option>
+                        <option value="python">Python (Sandbox)</option>
+                        <option value="sql">SQL (PostgreSQL/SQLite)</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn btn-secondary" id="btnResetCode">↺ Reset</button>
+                    <button class="btn btn-primary" id="btnRunCode">▶ Run Tests</button>
+                    <button class="btn btn-success" id="btnSubmit">✔ Submit</button>
+                </div>
+            </div>
+
+            <!-- Code Editor Area -->
+            <textarea id="codeEditor" class="code-textarea" spellcheck="false"></textarea>
+
+            <!-- Console & Diagnostics Output -->
+            <div class="console-pane">
+                <div class="console-header">
+                    <span>CONSOLE & TEST EXECUTION</span>
+                    <span id="executionTime" style="color: var(--accent-blue);">Idle</span>
+                </div>
+                <div class="console-output" id="consoleOutput">Click 'Run Tests' to evaluate your solution in the isolated Web Worker sandbox.</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/questions.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
